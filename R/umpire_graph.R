@@ -1,10 +1,10 @@
 #' Graph pitches by umpire
 #' 
-#' @param umpire Umpire ID. Defaults to "all".
-#' @param startdate Start date
-#' @param enddate End date
-#' @param count Ball-strike count. Defaults to all
-#' @param stand Batter handedness
+#' @param umpire Umpire name or ID. Defaults to "all". WARNING: Leaving as all will make graph take a long time to create.
+#' @param startdate Start date. Defaults to beginning of 2015. Format yyyy-mm-dd.
+#' @param enddate End date. Defaults to end of 2015. Format yyyy-mm-dd.
+#' @param count Ball-strike count. Defaults to all. Input x instead of a number to get all counts; e.g. "3-x" for all 3-ball counts
+#' @param stand Batter handedness. Defaults to both.
 #' @param save Whether to save the graph. Defaults to FALSE
 #' @param path Where to save the graph. Defaults to the current working directory
 #' @export
@@ -87,7 +87,7 @@ umpire_graph = function(umpire = "all",
     stat_contour(geom="polygon", aes(fill=..level..)) + 
     scale_fill_gradient2(low="mediumblue",high="red",mid="#8F0094",midpoint=60,name="Called Strike%") + 
     labs(x="X position (ft.), 0 = middle of the strike zone", y="Height (ft.) off ground") +
-    ggtitle(bquote(atop(.(title), atop(.(subt)), ""))) +
+    ggtitle(title, subtitle = subt) +
     fgt + theme(panel.background=element_rect(fill="#0000FF"), 
                 panel.grid.major=element_line(size = 0)) +
     geom_segment(x=sz_left, xend=sz_right, y=sz_bot, yend = sz_bot, color = "black", size = 1) +

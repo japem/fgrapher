@@ -1,18 +1,18 @@
-#' Graph sz
+#' Graph strike zone
 #' 
-#' @param batter Defaults to "all"
-#' @param pitcher Defaults to "all"
-#' @param count Ball-strike count. Defaults to all
-#' @param startdate Start date
-#' @param enddate End date
-#' @param stand Batter handedness
-#' @param throws Pitcher handedness
-#' @param size Size of the markers
-#' @param heatmap Defaults to FALSE
-#' @param pitchtypes Defaults to all
-#' @param color.code Defaults to "pitchtype"
-#' @param save Whether to save the graph. Defaults to FALSE
-#' @param path Where to save the graph. Defaults to the current working directory
+#' @param batter Defaults to "all". Input either a name or FanGraphs playerid.
+#' @param pitcher Defaults to "all". Input either a name or FanGraphs playerid.
+#' @param count Ball-strike count. Defaults to all. Input x instead of a number to get all counts; e.g. "3-x" for all 3-ball counts
+#' @param startdate Start date. Format yyyy-mm-dd.
+#' @param enddate End date. Format yyyy-mm-dd.
+#' @param stand Batter handedness. Defaults to both.
+#' @param throws Pitcher handedness. Defaults to both.
+#' @param size Size of the points on the graph.
+#' @param heatmap Defaults to FALSE.
+#' @param pitchtypes Defaults to all. To include multiple pitch types, create an array: c("Four-seam fastball","Changeup","Breaking ball")
+#' @param color.code What the colors of the points signify. Defaults to "pitchtype". Other options: result, hittype, biptype. Must be in quotation marks.
+#' @param save Whether to save the graph. Defaults to FALSE.
+#' @param path Where to save the graph. Defaults to the current working directory.
 #' @export
 
 sz_graph = function(batter = "all", pitcher = "all", count = "all",
@@ -237,8 +237,8 @@ sz_graph = function(batter = "all", pitcher = "all", count = "all",
       coord_cartesian(xlim=c(-3,3),ylim=c(0,6)) +
       geom_segment(x=-5,xend=5,y=0,yend=0,size=.75,color="black") +
       scale_color_manual(values = scale.colors, name = "") +
-      labs(x="",y="", caption = "Catcher's point of view") +
-      ggtitle(bquote(atop(.(title), atop(.(subt)), ""))) +
+      labs(x="",y="",caption = "Source: pitchf/x") +
+      ggtitle(title, subtitle = subt) +
       theme(axis.text=element_text(size=0), 
             panel.grid.major = element_line(size=0), 
             axis.ticks = element_line(size=0))
@@ -255,11 +255,11 @@ sz_graph = function(batter = "all", pitcher = "all", count = "all",
       geom_segment(x=sz_left, xend=sz_left, y=sz_top, yend = sz_bot, color = "black", size = 1) +
       geom_segment(x=sz_right, xend=sz_right, y=sz_top, yend = sz_bot, color = "black", size = 1) +
       fgt +
-      coord_cartesian(xlim=c(-3,3),ylim=c(0,6)) +
+      coord_cartesian(xlim=c(-3,3),ylim=c(0,5)) +
       geom_segment(x=-5,xend=5,y=0,yend=0,size=.75,color="black") +
       scale_fill_gradient(low="white",high=fg_green,name=scale.name) +
-      labs(x="",y="") +
-      ggtitle(bquote(atop(.(title), atop(.(subt)), ""))) +
+      labs(x="",y="", caption = "Source: pitchf/x") +
+      ggtitle(title, subtitle = subt) +
       theme(axis.text=element_text(size=0), 
             panel.grid.major = element_line(size=0), 
             axis.ticks = element_line(size=0)) +

@@ -1,7 +1,7 @@
 #' Create a graph for aging curves, based on particular stats
 #'
-#' @param stat A metric available through the FanGraphs database.
-#' @param playertyoe Whether to run the aging curves for batters or pitchers. Defaults to "batter"
+#' @param stat The stat to generate the age curve for. Must be a metric available in the FanGraphs database.
+#' @param playertype Either "batter" or "pitcher". Defaults to "batter"
 #' @param startyear The first year from which to calculate the aging curve. Defaults to 2000.
 #' @param endyear The final year from which to calculate the aging curve. Defaults to 2016.
 #' @param save Whether or not to save the graph. Defaults to FALSE.
@@ -59,6 +59,7 @@ age_curve_graph = function(stat,
                    join (select season, sum(`",stat,"`*",denom,")/sum(",denom,") as lg2 from ", df.name, " where type = 0 group by season) lg2 on lg2.season = b.season
                    where a.type = 0 and b.type = 0 and a.season between ", startyear, " and ", endyear, " and a.",pa.name," > 0 and b.",pa.name, "> 0 and a.age >= 20) c
                    group by Age")
+    capt = "Adjusted for year-to-year changes in league average"
   } else {
     query = paste0("select Age, sum(StatDiff*meanpa)/sum(meanpa) as StatDiff from
                    (select b.`", stat, "` - a.`", stat, "` as StatDiff, b.Age, 2/(1/a.",pa.name,"+1/b.",pa.name,") as MeanPA
@@ -66,6 +67,7 @@ age_curve_graph = function(stat,
                    join ", df.name, " b on b.season = a.season + 1 and b.playerid = a.playerid 
                    where a.type = 0 and b.type = 0 and a.season between ", startyear, " and ", endyear, " and a.",pa.name," > 0 and b.",pa.name, "> 0 and a.age >= 20) c
                    group by Age")
+    capt = ""
   }
   data = FGQuery(query)
   
@@ -95,9 +97,8 @@ age_curve_graph = function(stat,
   g = ggplot(data, aes(x=Age,y=StatDiff)) +
     geom_path(color = fg_green, size = 2, lineend = "round",linejoin = "round") +
     fgt +
-    labs(x = "Age", y = paste("Increase/Decrease in",stat.name)) +
-    ggtitle(bquote(atop(.(title), 
-                        atop(.(subt)), ""))) +
+    labs(x = "Age", y = paste("Increase/Decrease in",stat.name), caption = capt) +
+    ggtitle(title, subtitle = subt) +
     scale_x_continuous(breaks=20:42) +
     scale.y +
     annotate("point",x=data[1,1],y=data[1,2],size = 5, color = fg_green)

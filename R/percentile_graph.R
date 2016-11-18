@@ -1,6 +1,14 @@
 #' Graph percentiles
 #' 
-#' @param player XXXXX
+#' @param player The player to examine.
+#' @param player2 Optional. A player to compare.
+#' @param playertype Either "batter" or "pitcher". Defaults to batter.
+#' @param year The year to graph.
+#' @param stats The stats to use. Options are "standard" (default), "slash" (triple slash), "bip" (ball-in-play types), "qoc" (quality of contact), "pfx" (pitchf/x stats), "eras" (ERA/FIP/xFIP, pitchers only), "luck" (BABIP/HR per FB%/LOB%, pitchers only). Also can input custom array of stats. E.g. c("GB%","K%","OBP","SwStr%")
+#' @param denom The type of denominator to set the minimum. Defaults to plate appearances/total batters faced depending on the player type. Other options are "Pitches", "AB" (batters), "BIPcount", "GB", "FB", "LD"
+#' @param mindenom The minimum number of whatever the denominator is to create the set of players to compare to. Default is 200 (plate appearances).
+#' @param save Whether to save the graph. Defaults to FALSE.
+#' @param path Where to save the graph. Defaults to the current working directory.
 #' @export
 
 percentile_graph = function(player, player2 = "", 
@@ -156,8 +164,7 @@ percentile_graph = function(player, player2 = "",
       fgt + theme(panel.grid.major.x = element_line(size=0),
                   axis.text.x = element_text(color="black",family="Lato-Black", angle = ang, vjust = 0)) +
       labs(x="", y="Percentile") +
-      ggtitle(bquote(atop(.(title), 
-                          atop(.(subt)), ""))) +
+      ggtitle(title, subtitle = subt) +
       scale_y_continuous(breaks=seq(0,100,10)) + 
       scale_x_discrete() +
       coord_cartesian(ylim=c(0,100), expand = F) +
