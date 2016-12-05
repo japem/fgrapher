@@ -45,7 +45,7 @@ age_curve_graph = function(stat,
     denom_df = denom_pitcher
   }
   
-  if (stat %in% denom_df[["Stat"]] || substring(stat,1,3) == "pfx") {
+  if (stat %in% denom_df[["Stat"]] || (substring(stat,1,3) == "pfx" & substring(stat,1,4) != "pfxv" & !substring(stat,nchar(stat)-1) %in% c("-X","-Z"))) {
     if (stat %in% denom_df[["Stat"]]) {
       denom = as.character(filter(denom_df, Stat == stat)[["Denom"]])
     } else {
