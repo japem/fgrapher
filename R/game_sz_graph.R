@@ -43,7 +43,6 @@ game_sz_graph = function(date, hometeam, dh = 1,
       }
     }
   }
-  print(hometeam.id)
   if (hometeam.id == 0) {stop("Invalid team")}
   
   if (dh <= 1) {
