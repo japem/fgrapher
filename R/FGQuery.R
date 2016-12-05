@@ -5,7 +5,7 @@
 #' @examples
 #' \dontrun{FGQuery(query)}
 
-FGQuery = function(query) {
+FGQuery = function(query = "") {
   
   if (!exists("con")) {
     fg_username <- readline("Please provide your username for the FanGraphs database: ")
@@ -26,9 +26,11 @@ FGQuery = function(query) {
     uids <- FGQuery('select distinct UName, UmpireId from umpires_daily_batting_full_pfx')
     assign("uids", uids, envir = .GlobalEnv)
     
-    data = dbGetQuery(con, query)
-    dbDisconnect(con)
-    return(data)
+    if (query != "") {
+      data = dbGetQuery(con, query)
+      dbDisconnect(con)
+      return(data)
+    }
   }
   else 
     con <- dbConnect(RMySQL::MySQL(), dbname = "tht", username = fg_username, password = fg_password, host = "db.fangraphs.com")
