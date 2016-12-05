@@ -61,14 +61,19 @@ release_graph = function(pitcher,
                   substring(tolower(paste0(paste(pitchtypes,collapse=", ")," only.")),2))
   }
   
+  if (subt == "") {
+    plot.title = ggtitle(title)
+  } else {
+    plot.title = ggtitle(title, subtitle = subt)
+  }
   
   g = ggplot(pitches, aes(x=x0,y=z0)) +
     geom_point(alpha = .5, aes(color = pitch)) +
     fgt + coord_cartesian(xlim=c(-4,4),ylim=c(0,7.5)) +
     scale_color_manual(values=c(fg_green, fg_orange, fg_blue, fg_red, "black", "yellow", "lightblue","purple"),
                        name="Pitch Type") +
-    labs(x="Horizontal Release Point", y="Vertical Release Point", caption = "Source: pitchf/x. Values in feet.") +
-    ggtitle(title, subtitle = subt)
+    labs(x="Horizontal Release Point", y="Vertical Release Point", caption = "Source: PITCHf/x. Values in feet.") +
+    plot.title
 
   fname = paste0(gsub(":","",gsub("\\.","",gsub(" ","_",gsub(", ","_",title)))),".png")
   if (save) {

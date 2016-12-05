@@ -92,13 +92,22 @@ age_curve_graph = function(stat,
   } else {
     scale.y = scale_y_continuous()
   }
+  
   title = paste(stat.name,"Aging Curve for",title.playertype)
   subt = paste(startyear,"to",endyear)
+  
+  if (subt == "") {
+    plot.title = ggtitle(title)
+  } else {
+    plot.title = ggtitle(title, subtitle = subt)
+  }
+  
   g = ggplot(data, aes(x=Age,y=StatDiff)) +
     geom_path(color = fg_green, size = 2, lineend = "round",linejoin = "round") +
-    fgt +
+    fgt + theme(panel.background=element_rect(color="white",fill="white"),
+                axis.line = element_line(color="black")) +
     labs(x = "Age", y = paste("Increase/Decrease in",stat.name), caption = capt) +
-    ggtitle(title, subtitle = subt) +
+    plot.title +
     scale_x_continuous(breaks=20:42) +
     scale.y +
     annotate("point",x=data[1,1],y=data[1,2],size = 5, color = fg_green)

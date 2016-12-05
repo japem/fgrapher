@@ -20,7 +20,7 @@ lineup_graph = function(year, month, day,
   
   if (!hometeam %in% color[["MLBid"]]) {
     for (row in seq(1,nrow(color))) {
-      if (hometeam %in% color[row,]) {
+      if (hometeam %in% as.vector(t(color[row,]))) {
         hometeam = color[row,7]
       }
     }
@@ -28,7 +28,7 @@ lineup_graph = function(year, month, day,
   
   if (!awayteam %in% color[["MLBid"]]) {
     for (row in seq(1,nrow(color))) {
-      if (awayteam %in% color[row,]) {
+      if (awayteam %in% as.vector(t(color[row,]))) {
         awayteam = color[row,7]
       }
     }

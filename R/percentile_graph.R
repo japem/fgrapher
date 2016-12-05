@@ -146,14 +146,22 @@ percentile_graph = function(player, player2 = "",
     title = paste(name,"vs.",name2,"Percentile Ranks:",year)
   }
   subt = paste0("Minimum ",mindenom," ",denom," (",n," Players)")
+  
+  if (subt == "") {
+    plot.title = ggtitle(title)
+  } else {
+    plot.title = ggtitle(title, subtitle = subt)
+  }
+  
   if (player2 == "") {
     g = ggplot(a, aes(x=stat,y=pctl)) +
       geom_bar(stat="identity",fill=fg_blue) +
       fgt + theme(panel.grid.major.x = element_line(size=0),
-                  axis.text.x = element_text(color="black",family="Lato-Black", angle = ang, vjust = 0)) +
+                  axis.text.x = element_text(color="black",family="Lato-Black", angle = ang, vjust = 0),
+                  panel.background=element_rect(color="white",fill="white"),
+                  axis.line = element_line(color="black")) +
       labs(x="", y="Percentile") +
-      ggtitle(bquote(atop(.(title),
-                          atop(.(subt)), ""))) +
+      plot.title +
       scale_y_continuous(breaks=seq(0,100,10)) +
       scale_x_discrete() +
       coord_cartesian(ylim=c(0,100), expand = F) +
@@ -162,9 +170,11 @@ percentile_graph = function(player, player2 = "",
     g = ggplot(a, aes(x=stat,y=value,group=variable)) +
       geom_bar(stat="identity",position="dodge",aes(fill=variable)) +
       fgt + theme(panel.grid.major.x = element_line(size=0),
-                  axis.text.x = element_text(color="black",family="Lato-Black", angle = ang, vjust = 0)) +
+                  axis.text.x = element_text(color="black",family="Lato-Black", angle = ang, vjust = 0),
+                  panel.background=element_rect(color="white",fill="white"),
+                  axis.line = element_line(color="black")) +
       labs(x="", y="Percentile") +
-      ggtitle(title, subtitle = subt) +
+      plot.title +
       scale_y_continuous(breaks=seq(0,100,10)) + 
       scale_x_discrete() +
       coord_cartesian(ylim=c(0,100), expand = F) +
